@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời Tiết</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: black;
+        }
+
+        .main {
+            text-align: center;
+            width: 500px;
+            margin-top: 100px;
+            padding: 0 10px;
+        }
+
+        #answerSelector {
+            width: 100%;
+            height: 50px;
+            border-radius: 40px;
+            padding: 0 50px;
+            margin: 30px 0;
+            font-size: 20px;
+            background-color: white;
+            color: black;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+
+        .ten {
+            display: flex;
+        }
+
+        .ten_icon {
+            padding-left: 60px;
+        }
+
+        .ten_text {
+            margin-left: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ten_text_sub,
+        .ten_text_date {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .so {
+            font-size: 100px;
+            margin: 60px 0;
+        }
+
+        .thongtin {
+            display: flex;
+            width: 100%;
+            padding: 0 50px;
+            font-size: 16px;
+        }
+
+        .box1 {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            font-size: 16px;
+        }
+
+        .box2 {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+            font-size: 16px;
+        }
+
+        .thongtin1,
+        .thongtin2,
+        .thongtin3,
+        .thongtin4 {
+            line-height: 30px;
+            font-size: 16px;
+        }
+
+        #weather {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px 0;
+            color: black;
+            border: 1px solid gray;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+
+        i {
+            margin-right: 10px;
+        }
+
+        span {
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                width: 400px;
+                margin-top: 30px;
+            }
+
+            .so {
+                font-size: 90px;
+                margin: 40px 0;
+            }
+
+            .thongtin {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="main">
+            <h1>Dự báo thời tiết</h1>
+            <select id="answerSelector">
+                <option value="1">Hà Nội</option>
+                <option value="2">Hải Phòng</option>
+                <option value="3">Đà Lạt</option>
+                <option value="4">Hồ Chí Minh</option>
+            </select>
+            <div id="weather">
+                <div class="ten">
+                    <div class="ten_icon">
+                        <img src="https://openweathermap.org/img/wn/04d@2x.png" alt="ảnh thời tiết" id="iconWeather">
+                    </div>
+                    <div class="ten_text">
+                        <div class="ten_text_sub" id="cityName">
+                            HaNoi, VN
+                        </div>
+                        <div class="ten_text_date" id="weatherDate">
+                            10/27/2023
+                        </div>
+                    </div>
+                </div>
+                <div class="so" id="temperature">
+                    27℃
+                </div>
+                <div class="thongtin">
+                    <div class="box1">
+                        <div class="thongtin1">
+                            <i class="fa-solid fa-temperature-three-quarters"></i>Cảm nhận <span id="feelsLike"></span>
+                        </div>
+                        <div class="thongtin2">
+                            <i class="fa-solid fa-droplet"></i>Độ ẩm <span id="humidity"></span>
+                        </div>
+                    </div>
+                    <div class="box2">
+                        <div class="thongtin3">
+                            <i class="fa-solid fa-wind"></i>Tốc độ gió <span id="windSpeed"></span>
+                        </div>
+                        <div class="thongtin4">
+                            <i class="fa-solid fa-water"></i>Áp lực khí <span id="pressure"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        const key = 'cd36e9c8dd834d02a685da2d311bc858';
+        const api = 'https://api.openweathermap.org/data/2.5/weather?lang=vi&';
+        $(document).ready(function () {
+            const selectedCityId = $("#answerSelector").val();
+            getWeatherInfo(selectedCityId);
+            $("#answerSelector").change(function () {
+                const selectedCityId = $(this).val();
+                getWeatherInfo(selectedCityId);
+            });
+            function getWeatherInfo(cityId) {
+                let city;
+                if (cityId === "1") {
+                    city = {
+                        id: 1,
+                        name: "Hà Nội",
+                        lat: 21.023158,
+                        lng: 105.830809,
+                    };
+                } else if (cityId === "2") {
+                    city = {
+                        id: 2,
+                        name: "Hải Phòng",
+                        lat: 20.83189873036484,
+                        lng: 106.64964822313938,
+                    };
+                } else if (cityId === "3") {
+                    city = {
+                        id: 4,
+                        name: "Đà Lạt",
+                        lat: 11.999843988706193,
+                        lng: 108.39551186178659,
+                    };
+                }
+                else if (cityId === "4") {
+                    city = {
+                        id: 5,
+                        name: "Hồ Chí Minh",
+                        lat: 10.762622,
+                        lng: 106.660172,
+                    };
+                }
+
+                const apiUrl = `${api}lat=${city.lat}&lon=${city.lng}&appid=${key}`;
+                $.ajax({
+                    url: apiUrl,
+                    method: "GET",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        updateWeatherData(response);
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
+
+            function updateWeatherData(data) {
+                $("#iconWeather").attr("src", "https://openweathermap.org/img/wn/" + data.weather[0].icon + "@2x.png");
+                $("#cityName").text(data.name + ", " + data.sys.country);
+                $("#weatherDate").text(getFormattedDate(data.dt));
+                $("#temperature").text(convertKelvinToCelsius(data.main.temp) + "℃");
+                $("#feelsLike").text(convertKelvinToCelsius(data.main.feels_like) + "℃");
+                $("#humidity").text(data.main.humidity + "%");
+                $("#windSpeed").text(data.wind.speed + "km/h");
+                $("#pressure").text(data.main.pressure + " hAp");
+            }
+
+            function getFormattedDate(timestamp) {
+                const date = new Date(timestamp * 1000);
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+
+            function convertKelvinToCelsius(kelvin) {
+                return Math.round(kelvin - 273.15);
+            }
+        });
+    </script>
+</body>
+
+</html>
