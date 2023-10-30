@@ -144,9 +144,10 @@
             <h1>Dự báo thời tiết</h1>
             <select id="answerSelector">
                 <option value="1">Hà Nội</option>
-                <option value="2">Hải Phòng</option>
-                <option value="3">Đà Lạt</option>
-                <option value="4">Hồ Chí Minh</option>
+                <option value="2">Ninh Bình</option>
+                <option value="3">Hải Phòng</option>
+                <option value="4">Đà Lạt</option>
+                <option value="5">Hồ Chí Minh</option>
             </select>
             <div id="weather">
                 <div class="ten">
@@ -207,14 +208,21 @@
                         lat: 21.023158,
                         lng: 105.830809,
                     };
-                } else if (cityId === "2") {
+                } if (cityId === "2") {
+                    city = {
+                        id: 1,
+                        name: "Hà Nội",
+                        lat: 20.251169341369547,
+                        lng: 105.97258377428443,
+                    };
+                } else if (cityId === "3") {
                     city = {
                         id: 2,
                         name: "Hải Phòng",
                         lat: 20.83189873036484,
                         lng: 106.64964822313938,
                     };
-                } else if (cityId === "3") {
+                } else if (cityId === "4") {
                     city = {
                         id: 4,
                         name: "Đà Lạt",
@@ -222,7 +230,7 @@
                         lng: 108.39551186178659,
                     };
                 }
-                else if (cityId === "4") {
+                else if (cityId === "5") {
                     city = {
                         id: 5,
                         name: "Hồ Chí Minh",
